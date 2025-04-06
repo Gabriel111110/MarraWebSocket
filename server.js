@@ -8,10 +8,7 @@ const { Server } = require('socket.io'); // importazione oggetto Server da socke
 const conf = JSON.parse(fs.readFileSync("./conf.json"));
 
 let userList = [];
-let user={
-  socketId: "",
-  name: ""
-};
+
 
 
 
@@ -30,13 +27,14 @@ io.on('connection', (socket) => {
    //punto 2 
    //metto in ascolto il socket col set_username e lo assegno ad user e poi lo pusho in userList
    socket.on("set_username", (username) => {
-      user.socketId = socket.id;
-      user.name = username;
+      const user={
+         socketId: socket.socketId,
+         name: username
+       };
       userList.push(user);
       io.emit("chat", "benvenuto all'interno della chat " + username);
+      io.emit("list", userList); // invio la lista aggiornata
    });
-
-
 
    // punto 3 sostituisco il socket.id col username
    socket.on("message", (message) =>{
@@ -52,7 +50,9 @@ io.on('connection', (socket) => {
         const response = username + ': ' + message;
         io.emit("chat", response);
       }
-   })
+   });
+   
+
 });
 
 
