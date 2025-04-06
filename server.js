@@ -12,6 +12,9 @@ let user={
   socketId: "",
   name: ""
 };
+
+
+
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -33,11 +36,23 @@ io.on('connection', (socket) => {
       io.emit("chat", "tutti gli user: " + userList);
    });
 
-   socket.on('message', (message) => {
-      const response = socket.id + ': ' + message;
-      console.log(response);
-      io.emit("chat", response);
-   });
+
+
+   // punto 3 sostituisco il socket.id col username
+   socket.on("message", (message) =>{
+      let username="";
+      let found=false;
+      for(let i=0; i<userList.length; i++){
+         if(userList[i].socketId==socket.id){
+            username=userList[i].name;
+            found=true;
+         }
+      }
+      if(found){
+        const response = username + ': ' + message;
+        io.emit("chat", response);
+      }
+   })
 });
 
 
