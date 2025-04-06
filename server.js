@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
       user.socketId = socket.id;
       user.name = username;
       userList.push(user);
-      io.emit("chat", "tutti gli user: " + userList);
+      io.emit("chat", "benvenuto all'interno della chat " + username);
    });
 
 
