@@ -58,7 +58,11 @@ button.onclick = () => {
 
 socket.on("chat", (message) => {
   console.log(message);
-  messages.push(message);
+  if (typeof message === 'string') {
+    messages.push(message);
+  } else if (typeof message === 'object' && message.message) {
+    messages.push(message.message);
+  }
   render();
 })
 
@@ -66,6 +70,10 @@ socket.on("chat", (message) => {
 socket.on("list",(list)=>{
   console.log("lista ricevuta: "+ list);
   renderList(list);
+});
+//punto 7
+socket.on('disconnect', () => {
+  console.log('Disconnesso dal server');
 });
 
 const render = () => {

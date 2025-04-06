@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
    //metto in ascolto il socket col set_username e lo assegno ad user e poi lo pusho in userList
    socket.on("set_username", (username) => {
       const user={
-         socketId: socket.socketId,
+         socketId: socket.id,
          name: username
        };
       userList.push(user);
@@ -51,9 +51,25 @@ io.on('connection', (socket) => {
         io.emit("chat", response);
       }
    });
+   // punto 7 disconnessione
+   socket.on('disconnect', () => {
+      let found = false; 
+      let username = ''; 
+      for (let i = 0; i < userList.length; i++) {
+         if (userList[i].socketId === socket.id) {
+            found = true;
+            username = userList[i].name; 
+            userList.splice(i, 1);
+            io.emit("chat", { username: 'Server', message: `${username} ha lasciato la chat.`});
+            io.emit("list", userList);
+            break;
+         }
+      }
+   });
    
 
 });
+
 
 
 server.listen(conf.port, () => {
