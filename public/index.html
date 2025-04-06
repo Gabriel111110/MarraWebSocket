@@ -1,12 +1,33 @@
-<body>    
-    <div class="container">
-      <ul id="chat" class="list-group">
-      </ul>
-    </div>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>  
+    <!--
     <div class="row mt-4">
       <input id="input" class="form-control" />
       <button id="sendButton" type="button" class="btn btn-success">Send</button>
-    </div>    
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="application/javascript" src="client.js"></script>
-  </body>
+    </div> 
+    --> 
+
+
+  <div id="inserimentoNome" class="input-group mb-3">
+    <input type="text" id="nomeModale" placeholder="inserire nome">
+    <div class="input-group-append">
+      <button type="button" id="entra" class="btn btn-primary">Entra nella Chat</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <ul id="chat" class="list-group">
+    </ul>
+
+    <div id="areaInserimentoMess" class="input-group">
+      <input id="inputMessaggio" type="text" placeholder="inserire messaggio">
+      <button type="button" id="sendMessage" class="btn btn-success">invia</button>
+    </div>
+  </div>
+    
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="application/javascript" src="client.js"></script>
+</body>

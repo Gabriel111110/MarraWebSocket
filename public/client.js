@@ -1,14 +1,47 @@
-const input = document.getElementById("input");
-const button = document.getElementById("sendButton");
+const areaInserimentoNome = document.getElementById("inserimentoNome");
+const nomeModale = document.getElementById("nomeModale");
+const bottEntra = document.getElementById("entra");
 const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+
+const areaInserimentoMess = document.getElementById("areaInserimentoMess");
+const inputMessaggio = document.getElementById("inputMessaggio");
+const button = document.getElementById("sendMessage");
+let nomeUser= null;
+
+areaInserimentoMess.classList.add("hidden");
+chat.classList.add("hidden");
 
 const template = "<li class=\"list-group-item\">%MESSAGE</li>";
 const messages = [];
 
 const socket = io();
 
-input.onkeydown = (event) => {
-  
+const entrataChat=()=>{
+  const nome = nomeModale.value;
+  if(nome.length>0){
+    nomeUser = nome;
+    socket.emit("message", "benvenuto all'interno della chat" + nomeUser);
+    socket.emit("set_username", nomeUser);
+    areaInserimentoNome.classList.remove("show");
+    areaInserimentoNome.classList.add("hidden");
+
+    areaInserimentoMess.classList.remove("hidden");
+    areaInserimentoMess.classList.add("show");
+
+    chat.classList.remove("hidden");
+    chat.classList.add("show");
+
+  }
+}
+
+bottEntra.onclick = () => {
+  entrataChat();
+}
+
+
+
+inputMessaggio.onkeydown = (event) => {
   if (event.keyCode === 13) {
       event.preventDefault();
       button.click();
@@ -16,8 +49,8 @@ input.onkeydown = (event) => {
 }
 
 button.onclick = () => {
-  socket.emit("message", input.value);
-  input.value = "";
+  socket.emit("message", inputMessaggio.value);
+  inputMessaggio.value = "";
 }
 
 socket.on("chat", (message) => {
